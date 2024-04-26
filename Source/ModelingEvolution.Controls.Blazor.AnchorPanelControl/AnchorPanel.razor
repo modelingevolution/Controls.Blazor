@@ -1,0 +1,27 @@
+﻿<div class="anchor" id="@ContainerId">
+    @Dock
+    @if (@Anchors != null)
+    {
+        <div class="anchors-container">
+        @Anchors
+        </div>
+    }
+</div>
+
+
+@code {
+    private static int _idCounter = 0;
+    private int _id = _idCounter++;
+    private string ContainerId => Id ?? $"dock-{_id}";
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public RenderFragment Dock { get; set; }
+
+    [Parameter]
+    public RenderFragment? Anchors { get; set; }
+        
+
+}
