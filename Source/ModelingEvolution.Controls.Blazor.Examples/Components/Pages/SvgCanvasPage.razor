@@ -1,0 +1,57 @@
+﻿@page "/canvas"
+
+@using ModelingEvolution.Controls.Blazor.SvgCanvasControl
+@using ModelingEvolution.Drawing
+
+<PageTitle>Svg Canvas</PageTitle>
+
+
+<div class="row mt-2">
+    <div class="col">
+        <SvgCanvas Height="500">
+
+            @foreach(var plt in plants){
+
+                <Draggable @bind-Location="@plt.Top">
+                    <circle r="@plt.R" fill="@plt.Fill" stroke="#fff" />
+                </Draggable>
+                <Connector Start="@plt.Root" Dir1=Direction.Top End="@plt.Connect" Dir2=@plt.Dir />
+            }
+            <CubicBezierCurve Curve="@_curve" Stroke="@Colors.Black" Fill="@Colors.Transparent"/>
+        </SvgCanvas>
+    </div>
+</div>
+
+@code {
+
+    BezierCurve<double> _curve = new BezierCurve<double>(
+        new PointD(0, 0), new PointD(250, 0), new PointD(250, 0), new Point<double>(250, 250));
+
+    Plant[] plants = new[]{
+        new Plant (362, 280, 35, 400, Direction.Bottom, "#1aaee5" ),
+        new Plant (266, 232, 15, 370, Direction.Top, "#04dcd2" ),
+        new Plant (325, 299, 35, 390, Direction.Bottom, "#1aaee5" ),
+        new Plant (474, 123, 15, 375, Direction.Top, "#04dcd2" ),
+        new Plant (462, 258, 35, 400, Direction.Bottom, "#1aaee5" ),
+    };
+
+
+    class Plant {
+        public Plant(double x, double y, double r, double rootX, Direction dir, string fill)
+        {
+            Top = new Point<double>(x, y);
+            R = r;
+            Root = new Point<double>(rootX, 450);
+            Dir = dir;
+            Fill = fill;
+        }
+        public Point<double> Top;
+        public Point<double> Root;
+        public double R;
+        public Direction Dir;
+        
+        public string Fill = "#333";
+
+        public Point<double> Connect => Top - new Vector<double>(0,R * (Dir == Direction.Top ? 1 : -1));
+    };
+}

@@ -1,0 +1,25 @@
+@using System.Globalization
+
+
+<SvgPath D="@D()" Stroke="@Stroke" Fill="@Fill" StrokeWidth="@StrokeWidth"/>
+
+@code {
+    private BezierCurve<double> _c;
+
+    [Parameter]
+    public BezierCurve<double> Curve
+    {
+        get => _c;
+        set => _c = value;
+    }
+    [Parameter]
+    public Color? Stroke { get; set; }
+
+    [Parameter] 
+    public Color? Fill { get; set; }
+
+    [Parameter] 
+    public double? StrokeWidth { get; set; }
+
+    private string D() => string.Format(CultureInfo.InvariantCulture, "M {0} {1} C {2} {3}, {4} {5}, {6} {7}", _c.Start.X, _c.Start.Y, _c.C0.X, _c.C0.Y, _c.C1.X, _c.C1.Y, _c.End.X, _c.End.Y);
+}

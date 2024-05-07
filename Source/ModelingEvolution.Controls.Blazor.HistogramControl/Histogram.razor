@@ -1,0 +1,28 @@
+﻿@using ModelingEvolution.Drawing
+<SvgCanvas Class="@Class" Width="@Width" Height="@Height" OnClick="OnClick">
+    <CascadingValue Value="@_vm">
+        @ChildContent
+    </CascadingValue>
+</SvgCanvas>
+
+@code
+{
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter] public string Width { get; set; } = "255";
+
+    [Parameter] public string Height { get; set; } = "255";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private HistogramVm _vm = new HistogramVm();
+
+    private Task OnClick(MouseEventArgs arg)
+    {
+        
+        _vm.Add(new Point<double>(arg.OffsetX, arg.OffsetY));
+        return Task.CompletedTask;
+    }
+}

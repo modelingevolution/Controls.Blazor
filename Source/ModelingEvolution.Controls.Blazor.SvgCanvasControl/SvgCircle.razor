@@ -1,0 +1,38 @@
+@_renderer
+
+@code
+{
+    private RenderFragment? _renderer;
+
+    RenderFragment Create() => builder =>
+    {
+        int c = 0;
+        builder.OpenElement(c++, "circle");
+        builder.AddAttribute(c++, "r", R);
+
+        if(Stroke.HasValue)
+            builder.AddAttribute(c++, "stroke", Stroke.Value);
+        
+
+        if(Fill.HasValue)
+            builder.AddAttribute(c++, "fill", Fill.Value);
+
+        if(StrokeWidth.HasValue)
+            builder.AddAttribute(c++, "stroke-width", StrokeWidth.Value);
+
+        builder.CloseElement();
+    };
+
+    [Parameter] public double? StrokeWidth { get; set; }
+
+    [Parameter] public string R { get; set; }
+
+    [Parameter] public Color? Stroke { get; set; }
+
+    [Parameter] public Color? Fill { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _renderer = Create();
+    }
+}

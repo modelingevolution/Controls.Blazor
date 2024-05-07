@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.AnchorPanelControl\ModelingEvolution.Controls.Blazor.AnchorPanelControl.csproj" />
+    <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.HistogramControl\ModelingEvolution.Controls.Blazor.HistogramControl.csproj" />
+    <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.SvgCanvasControl\ModelingEvolution.Controls.Blazor.SvgCanvasControl.csproj" />
+  </ItemGroup>
+
+</Project>

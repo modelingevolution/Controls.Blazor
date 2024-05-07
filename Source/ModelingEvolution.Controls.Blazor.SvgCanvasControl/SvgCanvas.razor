@@ -1,0 +1,33 @@
+﻿
+<CascadingValue Value="mouseSrv">
+    <svg class="@Class" width="@Width" height="@Height" xmlns="http://www.w3.org/2000/svg"
+         @onmousedown="@OnMouseClick"
+         @onmousemove=@(e => mouseSrv.FireMove(e))                  
+                  @onmouseup=@(e => mouseSrv.FireUp(e))                           
+                           @onmouseleave=@(e => mouseSrv.FireLeave(e))>
+        @ChildContent
+    </svg>
+</CascadingValue>
+
+@code {
+    private readonly MouseService mouseSrv = new ();
+    
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter] public string Width { get; set; } = "100%";
+
+    [Parameter] public string Height { get; set; } = "100";
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private async Task OnMouseClick(MouseEventArgs args)
+    {
+        if (OnClick.HasDelegate)
+            await OnClick.InvokeAsync(args);
+    }
+}

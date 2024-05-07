@@ -1,0 +1,36 @@
+@using ModelingEvolution.Drawing
+
+@foreach (var i in Curves)
+{
+    <CubicBezierCurve Curve="@i" Stroke="Colors.Black" Fill="@Colors.Transparent"></CubicBezierCurve>
+}
+@foreach (var i in _histogramSeriesVm.Indexes)
+{
+    <Draggable @bind-Location="@i.Location">
+        <SvgCircle R="10" Fill="@Colors.Black"  />
+    </Draggable>
+}
+
+@code
+{
+    [CascadingParameter]
+    internal HistogramVm Parent { get; set; }
+
+    readonly HistogramSeriesVm _histogramSeriesVm = new();
+
+    
+
+    IEnumerable<BezierCurveD> Curves => BezierCurveD.Create(_histogramSeriesVm.Points, 0.5d);
+
+    [Parameter]
+    public byte[] Values { get; set; }
+
+    [Parameter]
+    public EventCallback<byte[]> ValuesChanged { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Parent.Register(this._histogramSeriesVm);
+    }
+}

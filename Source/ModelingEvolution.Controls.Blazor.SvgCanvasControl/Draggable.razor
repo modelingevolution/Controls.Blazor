@@ -1,0 +1,74 @@
+@using ModelingEvolution.Drawing
+@implements IDisposable
+ 
+<g transform="translate(@Location.X, @Location.Y)" 
+   cursor=@cursor 
+   @onmousedown=OnDown 
+   @onmousedown:stopPropagation="true">
+    @ChildContent
+</g>
+
+@code {
+    PointD? location;
+    VectorD mousePosition;
+    
+
+    [CascadingParameter]
+    internal MouseService MouseService { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    
+    [Parameter]
+    public PointD Location
+    {
+        get => location ?? PointD.Zero;
+        set { if (!location.HasValue || (!isDown & LocationChanged.HasDelegate)) { location = value; } }
+    }
+    [Parameter] public EventCallback<PointD> LocationChanged { get; set; }
+
+    
+    protected override void OnInitialized() {
+        MouseService.OnMove += OnMove;
+        MouseService.OnUp += OnUpLeave;
+        MouseService.OnLeave += OnUpLeave;
+        base.OnInitialized();
+    }
+
+
+    string cursor = "grab";
+    bool _isDown;
+    bool isDown {
+        get => _isDown;
+        set {
+            _isDown = value;
+            cursor = _isDown ? "grabbing" : "grab";
+        }
+    }
+
+
+    async Task OnDown(MouseEventArgs e)
+    {
+        isDown = true;
+        mousePosition = e.ClientMouseCoordinates();
+    }
+
+    async Task OnUpLeave(MouseEventArgs e)
+        => isDown = false;
+
+    async Task OnMove( MouseEventArgs e) {
+        if (!isDown)
+            return;
+
+        var tmp = e.ClientMouseCoordinates();
+        location -= mousePosition - tmp;
+        mousePosition = tmp;
+
+        await LocationChanged.InvokeAsync(location.Value);
+    }
+
+    public void Dispose() {
+        MouseService.OnMove -= OnMove;
+        MouseService.OnUp -= OnUpLeave;
+        MouseService.OnLeave -= OnUpLeave;
+    }
+}
