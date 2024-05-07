@@ -24,6 +24,11 @@
     [Parameter]
     public EventCallback<byte[]> ValuesChanged { get; set; }
 
+    [Parameter]
+    public IReadOnlyList<PointD> Points { get; set; }
+
+    [Parameter]
+    public EventCallback<IReadOnlyList<PointD>> PointsChanged { get; set; }
     
     protected override void OnInitialized()
     {
@@ -33,9 +38,13 @@
         
     }
 
-    private Task OnCompleted(byte[] arg)
+    private async Task OnCompleted(byte[] arg)
     {
         Values = arg;
-        return ValuesChanged.HasDelegate ? ValuesChanged.InvokeAsync(arg) : Task.CompletedTask;
+        if (ValuesChanged.HasDelegate)
+            await ValuesChanged.InvokeAsync(arg);
+        Points = _histogramSeriesVm.Points;
+        if (PointsChanged.HasDelegate)
+            await PointsChanged.InvokeAsync(_histogramSeriesVm.Points);
     }
 }

@@ -4,11 +4,17 @@
 <PageTitle>Histogram</PageTitle>
 
 <Histogram>
-    <HistogramSeries @bind-Values="@_values" />
+    <HistogramSeries @bind-Values="@_values" @bind-Points="@_points" />
 </Histogram>
 
+@if (_points != null)
+{
+    <h5>Points:</h5>
+    @(string.Join("; ", _points.Select(x=> $"[{x.X} {x.Y}]")));
+}
 @if (_values != null)
 {
+    <h5>Histogram:</h5>
     <table>
         <thead>
         <tr>
@@ -49,9 +55,10 @@
     </table>
 }
 
+
 @code
 {
     byte[]? _values;
+    IReadOnlyList<PointD>? _points;
 
-    
 }
