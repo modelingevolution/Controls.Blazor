@@ -25,10 +25,10 @@
     public EventCallback<byte[]> ValuesChanged { get; set; }
 
     [Parameter]
-    public IReadOnlyList<PointD> Points { get; set; }
+    public PointD[] Points { get; set; }
 
     [Parameter]
-    public EventCallback<IReadOnlyList<PointD>> PointsChanged { get; set; }
+    public EventCallback<PointD[]> PointsChanged { get; set; }
     
     protected override void OnInitialized()
     {
@@ -43,8 +43,9 @@
         Values = arg;
         if (ValuesChanged.HasDelegate)
             await ValuesChanged.InvokeAsync(arg);
-        Points = _histogramSeriesVm.Points;
+        Size<double> ratio = new Size<double>(255/ this.Parent.Width, 1);
+        Points = _histogramSeriesVm.Points.Select(x=> x * ratio).ToArray();
         if (PointsChanged.HasDelegate)
-            await PointsChanged.InvokeAsync(_histogramSeriesVm.Points);
+            await PointsChanged.InvokeAsync(Points);
     }
 }
