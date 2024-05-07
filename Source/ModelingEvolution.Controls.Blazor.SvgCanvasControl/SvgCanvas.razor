@@ -1,33 +1,83 @@
 ﻿
 <CascadingValue Value="mouseSrv">
-    <svg class="@Class" width="@Width" height="@Height" xmlns="http://www.w3.org/2000/svg"
-         @onmousedown="@OnMouseClick"
-         @onmousemove=@(e => mouseSrv.FireMove(e))                  
-                  @onmouseup=@(e => mouseSrv.FireUp(e))                           
-                           @onmouseleave=@(e => mouseSrv.FireLeave(e))>
-        @ChildContent
-    </svg>
+    <CascadingValue Value="@_viewBox">
+        <svg class="@Class" 
+             width="@Width" 
+             height="@Height" 
+             viewBox="@_viewBox"
+             preserveAspectRatio="@_aspectRatio"
+             xmlns="http://www.w3.org/2000/svg"
+             @onmousedown="@OnMouseClick"
+             @onmousemove=@(e => mouseSrv.FireMove(e))
+             @onmouseup=@MouseUp
+             @onmouseleave=@MouseLeave>
+            @ChildContent
+        </svg>
+    </CascadingValue>
 </CascadingValue>
 
 @code {
     private readonly MouseService mouseSrv = new ();
+    private string _aspectRatio = "xMidYMid meet";
+    private ViewBox _viewBox;
+
+    [Parameter]
+    public ViewBox ViewBox { get; set; }
     
     [Parameter]
     public string Class { get; set; }
 
-    [Parameter] public string Width { get; set; } = "100%";
+    [Parameter] public double Width { get; set; } = 600;
 
-    [Parameter] public string Height { get; set; } = "100";
+    [Parameter] public double Height { get; set; } = 800;
 
     [Parameter]
-    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    public EventCallback<CanvasMouseEventArgs> OnMouseDown { get; set; }
+
+    [Parameter]
+    public EventCallback<CanvasMouseEventArgs> OnMouseUp { get; set; }
+
+    [Parameter]
+    public EventCallback<CanvasMouseEventArgs> OnMouseLeave { get; set; }
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    private async Task OnMouseClick(MouseEventArgs args)
+    [Parameter]
+    public bool DisablePreserveAspectRatio { get; set; }
+
+    private async Task MouseUp(MouseEventArgs args)
     {
-        if (OnClick.HasDelegate)
-            await OnClick.InvokeAsync(args);
+        await mouseSrv.FireUp(args);
+        await FireCallback(args, OnMouseUp);
     }
+    private async Task MouseLeave(MouseEventArgs args)
+    {
+        await mouseSrv.FireLeave(args);
+        await FireCallback(args, OnMouseLeave);
+    }
+    private async Task FireCallback(MouseEventArgs args, EventCallback<CanvasMouseEventArgs> ev)
+    {
+        if (ev.HasDelegate)
+        {
+            var x = args.OffsetX;
+            var y = args.OffsetY;
+
+            await ev.InvokeAsync(new CanvasMouseEventArgs()
+            {
+                Args = args,
+                Location = ViewBox.Calculate(x, y)
+            });
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (DisablePreserveAspectRatio)
+            _aspectRatio = "none";
+        _viewBox = ViewBox ?? new ViewBox() { Size = new Size<double>(Width, Height) };
+        _viewBox.ElementSize = new Size<double>(Width, Height);
+    }
+
+    private async Task OnMouseClick(MouseEventArgs args) => await FireCallback(args, OnMouseDown);
 }

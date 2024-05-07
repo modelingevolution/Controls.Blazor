@@ -1,9 +1,10 @@
+@using System.Globalization
 @using ModelingEvolution.Drawing
 @implements IDisposable
  
-<g transform="translate(@Location.X, @Location.Y)" 
+<g transform="@Transform()"
    cursor=@cursor 
-   @onmousedown=OnDown 
+   @onmousedown=@OnDown 
    @onmousedown:stopPropagation="true">
     @ChildContent
 </g>
@@ -11,13 +12,21 @@
 @code {
     PointD? location;
     VectorD mousePosition;
-    
+    MoveDelegate _filter;
+
+    [CascadingParameter]
+    public ViewBox ViewBox { get; set; }
 
     [CascadingParameter]
     internal MouseService MouseService { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    
+
+    private string Transform()
+    {
+        return string.Format(CultureInfo.InvariantCulture, "translate({0}, {1})", Location.X, Location.Y);
+    }
+
     [Parameter]
     public PointD Location
     {
@@ -26,7 +35,9 @@
     }
     [Parameter] public EventCallback<PointD> LocationChanged { get; set; }
 
-    
+    [Parameter]
+    public MoveDelegate? CanMove { get; set; }
+
     protected override void OnInitialized() {
         MouseService.OnMove += OnMove;
         MouseService.OnUp += OnUpLeave;
@@ -34,6 +45,15 @@
         base.OnInitialized();
     }
 
+    private static bool CanMoveFunc(PointD src, out PointD dst)
+    {
+        dst = src;
+        return true;
+    }
+    protected override void OnParametersSet()
+    {
+        _filter = CanMove ?? CanMoveFunc;
+    }
 
     string cursor = "grab";
     bool _isDown;
@@ -45,7 +65,7 @@
         }
     }
 
-
+    
     async Task OnDown(MouseEventArgs e)
     {
         isDown = true;
@@ -60,7 +80,17 @@
             return;
 
         var tmp = e.ClientMouseCoordinates();
-        location -= mousePosition - tmp;
+        var d = mousePosition - tmp;
+        d = ViewBox.Calculate(d);
+        var dstLocation = location - d;
+        if(dstLocation.HasValue)
+        {
+            if (!_filter(dstLocation.Value, out var dst))
+                return;
+            else dstLocation = dst;
+        }
+
+        location = dstLocation;
         mousePosition = tmp;
 
         await LocationChanged.InvokeAsync(location.Value);

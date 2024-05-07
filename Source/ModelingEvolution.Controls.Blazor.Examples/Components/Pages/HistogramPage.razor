@@ -1,12 +1,57 @@
 ﻿@page "/histogram"
+@using System.Text
 
 <PageTitle>Histogram</PageTitle>
 
 <Histogram>
-    <HistogramSeries/>
+    <HistogramSeries @bind-Values="@_values" />
 </Histogram>
+
+@if (_values != null)
+{
+    <table>
+        <thead>
+        <tr>
+            <th>x</th>
+            <th>y</th>
+            <th>x</th>
+            <th>y</th>
+            <th>x</th>
+            <th>y</th>
+            <th>x</th>
+            <th>y</th>
+            <th>x</th>
+            <th>y</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 51; i++)
+            {
+                <tr>
+                    <td style="padding-left:8px; padding-right:8px">@i</td>
+                    <td>@_values[i]</td>
+
+                    <td style="padding-left:8px; padding-right:8px">@(i + 51)</td>
+                    <td>@_values[i + 51]</td>
+
+                    <td style="padding-left:8px; padding-right:8px">@(i + 51 * 2)</td>
+                    <td>@_values[i + 51 * 2]</td>
+
+                    <td style="padding-left:8px; padding-right:8px">@(i + 51 * 3)</td>
+                    <td>@_values[i + 51 * 3]</td>
+
+                    <td style="padding-left:8px; padding-right:8px">@(i + 51 * 4)</td>
+                    <td>@_values[i + 51 * 4]</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code
 {
+    byte[]? _values;
 
+    
 }

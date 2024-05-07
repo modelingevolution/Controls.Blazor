@@ -1,12 +1,12 @@
 @using ModelingEvolution.Drawing
 
-@foreach (var i in Curves)
+@foreach (var i in _histogramSeriesVm.Curves)
 {
     <CubicBezierCurve Curve="@i" Stroke="Colors.Black" Fill="@Colors.Transparent"></CubicBezierCurve>
 }
 @foreach (var i in _histogramSeriesVm.Indexes)
 {
-    <Draggable @bind-Location="@i.Location">
+    <Draggable @bind-Location="@i.Location" CanMove="@i.CanMove">
         <SvgCircle R="10" Fill="@Colors.Black"  />
     </Draggable>
 }
@@ -15,22 +15,27 @@
 {
     [CascadingParameter]
     internal HistogramVm Parent { get; set; }
-
     readonly HistogramSeriesVm _histogramSeriesVm = new();
 
-    
-
-    IEnumerable<BezierCurveD> Curves => BezierCurveD.Create(_histogramSeriesVm.Points, 0.5d);
-
+   
     [Parameter]
     public byte[] Values { get; set; }
 
     [Parameter]
     public EventCallback<byte[]> ValuesChanged { get; set; }
 
-
+    
     protected override void OnInitialized()
     {
         Parent.Register(this._histogramSeriesVm);
+        _histogramSeriesVm.Completed += OnCompleted;
+        _histogramSeriesVm.Width = Parent.Width;
+        
+    }
+
+    private Task OnCompleted(byte[] arg)
+    {
+        Values = arg;
+        return ValuesChanged.HasDelegate ? ValuesChanged.InvokeAsync(arg) : Task.CompletedTask;
     }
 }
