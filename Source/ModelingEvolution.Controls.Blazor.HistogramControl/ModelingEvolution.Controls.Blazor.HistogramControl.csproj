@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -13,9 +13,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.4" />
+    <PackageReference Include="MudBlazor" Version="6.19.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.ResizableControl\ModelingEvolution.Controls.Blazor.ResizableControl.csproj" />
     <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.SvgCanvasControl\ModelingEvolution.Controls.Blazor.SvgCanvasControl.csproj" />
   </ItemGroup>
 

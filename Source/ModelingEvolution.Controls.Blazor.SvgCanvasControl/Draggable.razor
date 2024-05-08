@@ -1,9 +1,10 @@
 @using System.Globalization
 @using ModelingEvolution.Drawing
+@using MudBlazor.Utilities
 @implements IDisposable
  
 <g transform="@Transform()"
-   cursor=@cursor 
+   class=@_class 
    @onmousedown=@OnDown 
    @onmousedown:stopPropagation="true">
     @ChildContent
@@ -13,6 +14,7 @@
     PointD? location;
     VectorD mousePosition;
     MoveDelegate _filter;
+    private string _class;
 
     [CascadingParameter]
     public ViewBox ViewBox { get; set; }
@@ -33,10 +35,21 @@
         get => location ?? PointD.Zero;
         set { if (!location.HasValue || (!isDown & LocationChanged.HasDelegate)) { location = value; } }
     }
-    [Parameter] public EventCallback<PointD> LocationChanged { get; set; }
+    [Parameter] 
+    public EventCallback<PointD> LocationChanged { get; set; }
+
+    [Parameter] 
+    public EventCallback<MouseEventArgs> MouseDown { get; set; }
 
     [Parameter]
     public MoveDelegate? CanMove { get; set; }
+
+    [Parameter]
+    public bool IsDragDisabled { get; set; }
+
+
+    [Parameter]
+    public string? Class { get; set; }
 
     protected override void OnInitialized() {
         MouseService.OnMove += OnMove;
@@ -53,15 +66,34 @@
     protected override void OnParametersSet()
     {
         _filter = CanMove ?? CanMoveFunc;
+        if (!IsDragDisabled)
+            ComputeCss();
+        else _class = Class ?? string.Empty;
     }
 
-    string cursor = "grab";
+    private void ComputeCss()
+    {
+        CssBuilder tmp = new CssBuilder(Class ?? String.Empty);
+        if (Class == null || !Class.Contains("cursor-"))
+        {
+            if(!IsDragDisabled)
+                tmp.AddClass(_isDown ? "cursor-grabbing" : "cursor-grab");
+        }
+        _class = tmp.Build();
+    }
+
+
     bool _isDown;
     bool isDown {
         get => _isDown;
         set {
+
             _isDown = value;
-            cursor = _isDown ? "grabbing" : "grab";
+            if (this.IsDragDisabled)
+                return;
+            if(value)
+                _class = string.Join(';', _class.Split(';').Where(x => !x.StartsWith("cursor-")).Union(["cursor-grabbing"]));
+            else ComputeCss();
         }
     }
 
@@ -70,6 +102,8 @@
     {
         isDown = true;
         mousePosition = e.ClientMouseCoordinates();
+        if (MouseDown.HasDelegate)
+            await MouseDown.InvokeAsync(e);
     }
 
     async Task OnUpLeave(MouseEventArgs e)

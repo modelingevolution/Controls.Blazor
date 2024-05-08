@@ -1,0 +1,77 @@
+﻿@using Microsoft.JSInterop
+@using ModelingEvolution.Drawing
+@using MudBlazor.Utilities
+@using RectangleF = ModelingEvolution.Drawing.Rectangle<float>
+@inject IJSRuntime _js
+<div style="@_style" id="@_id" >
+    @if (_initialized)
+    {
+        @ChildContent
+    }
+</div>
+
+@code
+{
+    private static int _c = 0;
+    private string _style;
+    private string _id = $"resizable-{_c++}";
+    private bool _initialized;
+
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string? Width { get; set; }
+    [Parameter]
+    public string? Height { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+    
+    [Parameter]
+    public Size<double> Size { get; set; }
+
+
+    [Parameter]
+    public EventCallback<Size<double>> SizeChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        StyleBuilder sb = new StyleBuilder();
+        if (!string.IsNullOrWhiteSpace(Width))
+            sb=sb.AddStyle("width", Width);
+        if (!string.IsNullOrWhiteSpace(Height))
+            sb = sb.AddStyle("height", Height);
+        if (!string.IsNullOrWhiteSpace(Style))
+            _style = $"{Style};{sb.Build()}";
+        else _style = sb.Build();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var rect = await _js.GetBoundingClientRectAsync(_id);
+            Size = new Size<double>(rect.Width, rect.Height);
+            if (SizeChanged.HasDelegate)
+                await SizeChanged.InvokeAsync(Size);
+            var observer = await _js.ObserveBoundingRect(_id);
+            observer.Changed += OnSizeChanged;
+            _initialized = true;
+            this.StateHasChanged();
+        }
+    }
+
+    private async Task OnSizeChanged(object arg1, RectangleF arg2)
+    {
+        Size = new Size<double>(arg2.Width, arg2.Height);
+        if (SizeChanged.HasDelegate)
+        {
+            await SizeChanged.InvokeAsync(Size);
+            this.StateHasChanged();
+        }
+    }
+}

@@ -1,9 +1,11 @@
-﻿
+﻿@using System.Globalization
+
 <CascadingValue Value="mouseSrv">
     <CascadingValue Value="@_viewBox">
         <svg class="@Class" 
-             width="@Width" 
-             height="@Height" 
+             style="@Style"
+             width="@Size.Width.ToString(CultureInfo.InvariantCulture)" 
+             height="@Size.Height.ToString(CultureInfo.InvariantCulture)"
              viewBox="@_viewBox"
              preserveAspectRatio="@_aspectRatio"
              xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +29,12 @@
     [Parameter]
     public string Class { get; set; }
 
-    [Parameter] public double Width { get; set; } = 600;
+    [Parameter]
+    public string Style { get; set; }
 
-    [Parameter] public double Height { get; set; } = 800;
+    [Parameter] 
+    public Size<double> Size { get; set; } = new Size<double>(600,800);
+
 
     [Parameter]
     public EventCallback<CanvasMouseEventArgs> OnMouseDown { get; set; }
@@ -75,8 +80,8 @@
     {
         if (DisablePreserveAspectRatio)
             _aspectRatio = "none";
-        _viewBox = ViewBox ?? new ViewBox() { Size = new Size<double>(Width, Height) };
-        _viewBox.ElementSize = new Size<double>(Width, Height);
+        _viewBox = ViewBox ?? new ViewBox() { Size = this.Size };
+        _viewBox.ElementSize = Size;
     }
 
     private async Task OnMouseClick(MouseEventArgs args) => await FireCallback(args, OnMouseDown);

@@ -1,37 +1,50 @@
 ﻿@using ModelingEvolution.Drawing
-<SvgCanvas Class="@Class" Width="@Width" Height="@Height" 
-           ViewBox="ViewBox.Create(0,0,Width,255)" DisablePreserveAspectRatio="false"
-           OnMouseDown="OnMouseDown" OnMouseUp="OnMouseUp">
-    <CascadingValue Value="@_vm">
-        @ChildContent
-    </CascadingValue>
-</SvgCanvas>
+@using ModelingEvolution.Controls.Blazor.ResizableControl
 
+<MudStack Row="true"  Justify="Justify.Center">
+    <MudFab Color="@_vm.SelectTool.Color" OnClick="@_vm.SelectTool.Select"  StartIcon="@Icons.Material.Filled.CropFree"/>
+    <MudFab Color="@_vm.AddPointTool.Color" OnClick="@_vm.AddPointTool.Select" StartIcon="@Icons.Material.Filled.Add"/>
+    <MudFab Color="@_vm.RemovePointTool.Color" OnClick="@_vm.RemovePointTool.Select" StartIcon="@Icons.Material.Filled.Remove" />
+</MudStack>
+<Resizable @bind-Size="@Size" Width="100%" Height="255px">
+    <SvgCanvas Class="@Class" 
+               Size="@Size" Style="position:absolute"
+               ViewBox="ViewBox.Create(0,0,Size.Width,Size.Height)" 
+               OnMouseDown="OnMouseDown" OnMouseUp="OnMouseUp">
+        <CascadingValue Value="@_vm">
+            @ChildContent
+        </CascadingValue>
+    </SvgCanvas>
+</Resizable>
 @code
 {
+
+    private Size<double> Size
+    {
+        get => _size;
+        set
+        {
+            _size = value;
+            _vm.Width = _size.Width;
+            _vm.Height = _size.Height;
+        }
+    }
+
     [Parameter]
     public string Class { get; set; }
 
-    [Parameter] public double Width { get; set; } = 510;
-
-    [Parameter] public double Height { get; set; } = 255;
-
+    
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+    
+    private HistogramVm _vm = new HistogramVm();
+    private Size<double> _size = new Size<double>(255);
 
     
-
-    private HistogramVm _vm = new HistogramVm();
-
-    protected override void OnParametersSet()
-    {
-        _vm.Width = Width;
-        _vm.Height = Height;
-    }
-
     private Task OnMouseDown(CanvasMouseEventArgs arg)
     {
-        _vm.Add(arg.Location);
+        if(_vm.SelectedTool == _vm.AddPointTool)
+            _vm.Add(arg.Location);
         return Task.CompletedTask;
     }
 

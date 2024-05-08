@@ -2,12 +2,15 @@
 
 @foreach (var i in _histogramSeriesVm.Curves)
 {
-    <CubicBezierCurve Curve="@i" Stroke="Colors.Black" Fill="@Colors.Transparent"></CubicBezierCurve>
+    <CubicBezierCurve Curve="@i" StrokeWidth="2"
+                      Stroke="ModelingEvolution.Drawing.Colors.White" Fill="@ModelingEvolution.Drawing.Colors.Transparent"></CubicBezierCurve>
 }
 @foreach (var i in _histogramSeriesVm.Indexes)
 {
-    <Draggable @bind-Location="@i.Location" CanMove="@i.CanMove">
-        <SvgCircle R="10" Fill="@Colors.Black"  />
+    <Draggable @bind-Location="@i.Location" CanMove="@i.CanMove" MouseDown="@i.OnMouseDown">
+        <SvgCircle R="8" StrokeWidth="1" 
+                   Stroke="ModelingEvolution.Drawing.Colors.White" 
+                   Fill="@(ModelingEvolution.Drawing.Color.FromArgb(255,119,107,231))" />
     </Draggable>
 }
 
@@ -33,6 +36,7 @@
     protected override void OnInitialized()
     {
         Parent.Register(this._histogramSeriesVm);
+        _histogramSeriesVm.Parent = Parent;
         _histogramSeriesVm.Completed += OnCompleted;
         _histogramSeriesVm.Width = Parent.Width;
         
@@ -48,4 +52,6 @@
         if (PointsChanged.HasDelegate)
             await PointsChanged.InvokeAsync(Points);
     }
+
+    
 }

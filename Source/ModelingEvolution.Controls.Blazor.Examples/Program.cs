@@ -1,4 +1,5 @@
 using ModelingEvolution.Controls.Blazor.Examples.Components;
+using MudBlazor.Services;
 
 namespace ModelingEvolution.Controls.Blazor.Examples
 {
@@ -11,7 +12,7 @@ namespace ModelingEvolution.Controls.Blazor.Examples
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
-
+            builder.Services.AddMudServices();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
