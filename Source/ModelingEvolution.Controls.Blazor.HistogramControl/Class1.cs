@@ -104,10 +104,13 @@ namespace ModelingEvolution.Controls.Blazor.HistogramControl
                 Color = _isSelected ? Color.Primary : Color.Default;
                 if (_parent != null! && value)
                     _parent.SelectedTool = this;
+                if (_parent is { SelectedTool.IsSelected: false })
+                    _parent.SelectedTool.IsSelected = true;
             }
         }
         public string CanvasClass { get; }
         public string PointClass { get; }
+
         public void Select()
         {
             IsSelected = true;

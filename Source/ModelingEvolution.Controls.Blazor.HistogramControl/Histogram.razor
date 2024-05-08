@@ -1,10 +1,26 @@
 ﻿@using ModelingEvolution.Drawing
 @using ModelingEvolution.Controls.Blazor.ResizableControl
+@using Color = MudBlazor.Color
 
 <MudStack Row="true"  Justify="Justify.Center">
-    <MudFab Color="@_vm.SelectTool.Color" OnClick="@_vm.SelectTool.Select"  StartIcon="@Icons.Material.Filled.CropFree"/>
-    <MudFab Color="@_vm.AddPointTool.Color" OnClick="@_vm.AddPointTool.Select" StartIcon="@Icons.Material.Filled.Add"/>
-    <MudFab Color="@_vm.RemovePointTool.Color" OnClick="@_vm.RemovePointTool.Select" StartIcon="@Icons.Material.Filled.Remove" />
+    <MudToggleIconButton Color="Color.Default" 
+                         Variant="Variant.Filled"
+                         ToggledColor="Color.Primary"
+                         @bind-Toggled="@_vm.SelectTool.IsSelected"
+                         Icon="@Icons.Material.Filled.CropFree"
+                         ToggledIcon="@Icons.Material.Filled.CropFree"/>
+    <MudToggleIconButton Color="Color.Default" 
+                         Variant="Variant.Filled"
+                         ToggledColor="Color.Primary" 
+                         @bind-Toggled="@_vm.AddPointTool.IsSelected" 
+                         Icon="@Icons.Material.Filled.Add"
+                         ToggledIcon="@Icons.Material.Filled.Add"/>
+    <MudToggleIconButton Color="Color.Default" 
+                         ToggledColor="Color.Primary"
+                         Variant="Variant.Filled"
+                         @bind-Toggled="@_vm.RemovePointTool.IsSelected" 
+                         Icon="@Icons.Material.Filled.Remove"
+                         ToggledIcon="@Icons.Material.Filled.Remove"/>
 </MudStack>
 <Resizable @bind-Size="@Size" Width="100%" Height="255px">
     <SvgCanvas Class="@Class" 
