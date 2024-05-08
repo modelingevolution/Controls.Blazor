@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ModelingEvolution.Controls.Blazor.SvgCanvasControl\ModelingEvolution.Controls.Blazor.SvgCanvasControl.csproj" />
   </ItemGroup>
 
