@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using PointD = ModelingEvolution.Drawing.Point<double>;
 using VectorD = ModelingEvolution.Drawing.Vector<double>;
 using BezierCurveD = ModelingEvolution.Drawing.BezierCurve<double>;
+using static MudBlazor.Colors;
 
 namespace ModelingEvolution.Controls.Blazor.HistogramControl
 {
@@ -83,6 +84,19 @@ namespace ModelingEvolution.Controls.Blazor.HistogramControl
             _points.RemoveAt(point.Index);
             for (int i = point.Index; i < _indexes.Count; i++)
                 _indexes[i].Index = i;
+        }
+
+        public void Load(PointD[] points)
+        {
+            Size<double> ratio = new Size<double>(Width / 255, 1);
+            _indexes.Clear();
+            _points.Clear();
+            for (var index = 0; index < points.Length; index++)
+            {
+                var i = points[index] * ratio;
+                _points.Add(i);
+                _indexes.Add(new PointIndex(this, index,_points));
+            }
         }
     }
 }

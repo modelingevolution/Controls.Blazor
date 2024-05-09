@@ -39,7 +39,8 @@
         _histogramSeriesVm.Parent = Parent;
         _histogramSeriesVm.Completed += OnCompleted;
         _histogramSeriesVm.Width = Parent.Width;
-        
+        if(Points!=null && Points.Any())
+            _histogramSeriesVm.Load(Points);
     }
 
     private async Task OnCompleted(byte[] arg)
