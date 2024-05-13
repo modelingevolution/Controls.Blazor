@@ -2,7 +2,7 @@
 @using ModelingEvolution.Controls.Blazor.ResizableControl
 @using Color = MudBlazor.Color
 
-<MudStack Row="true"  Justify="Justify.Center">
+<MudToolBar Style="justify-content: center">
     <MudToggleIconButton Color="Color.Default" 
                          Variant="Variant.Filled"
                          ToggledColor="Color.Primary"
@@ -21,7 +21,7 @@
                          @bind-Toggled="@_vm.RemovePointTool.IsSelected" 
                          Icon="@Icons.Material.Filled.Remove"
                          ToggledIcon="@Icons.Material.Filled.Remove"/>
-</MudStack>
+</MudToolBar>
 <Resizable @bind-Size="@Size" Width="100%" Height="255px">
     <SvgCanvas Class="@Class" 
                Size="@Size" Style="position:absolute"
