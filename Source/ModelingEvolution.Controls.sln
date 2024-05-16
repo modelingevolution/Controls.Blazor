@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34902.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.HistogramControl", "ModelingEvolution.Controls.Blazor.HistogramControl\ModelingEvolution.Controls.Blazor.HistogramControl.csproj", "{7194855D-02CD-4E18-ABCF-D79AFC8CC329}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.AnchorPanelControl", "ModelingEvolution.Controls.Blazor.AnchorPanelControl\ModelingEvolution.Controls.Blazor.AnchorPanelControl.csproj", "{D955A4C9-F994-4DC7-8EB0-608440D4BA43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.ResizableControl", "ModelingEvolution.Controls.Blazor.ResizableControl\ModelingEvolution.Controls.Blazor.ResizableControl.csproj", "{1C494F73-B0BB-4464-A3EF-C230EAAAB809}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.SvgCanvasControl", "ModelingEvolution.Controls.Blazor.SvgCanvasControl\ModelingEvolution.Controls.Blazor.SvgCanvasControl.csproj", "{4EEEB3E9-2AB6-4C24-A090-54F0BC11655C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.Tests", "ModelingEvolution.Controls.Blazor.Tests\ModelingEvolution.Controls.Blazor.Tests.csproj", "{04CF1688-8C5B-4CBF-A3E1-7C5C967109F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingEvolution.Controls.Blazor.Examples", "ModelingEvolution.Controls.Blazor.Examples\ModelingEvolution.Controls.Blazor.Examples.csproj", "{C82F8FBB-6C72-49E6-9B3C-C07B85581FF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2B986BF-80BA-48DB-946B-E429F66C45A5}"
+	ProjectSection(SolutionItems) = preProject
+		..\cake.ps1 = ..\cake.ps1
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7194855D-02CD-4E18-ABCF-D79AFC8CC329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7194855D-02CD-4E18-ABCF-D79AFC8CC329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7194855D-02CD-4E18-ABCF-D79AFC8CC329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7194855D-02CD-4E18-ABCF-D79AFC8CC329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D955A4C9-F994-4DC7-8EB0-608440D4BA43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D955A4C9-F994-4DC7-8EB0-608440D4BA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D955A4C9-F994-4DC7-8EB0-608440D4BA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D955A4C9-F994-4DC7-8EB0-608440D4BA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C494F73-B0BB-4464-A3EF-C230EAAAB809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C494F73-B0BB-4464-A3EF-C230EAAAB809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C494F73-B0BB-4464-A3EF-C230EAAAB809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C494F73-B0BB-4464-A3EF-C230EAAAB809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EEEB3E9-2AB6-4C24-A090-54F0BC11655C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EEEB3E9-2AB6-4C24-A090-54F0BC11655C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EEEB3E9-2AB6-4C24-A090-54F0BC11655C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EEEB3E9-2AB6-4C24-A090-54F0BC11655C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04CF1688-8C5B-4CBF-A3E1-7C5C967109F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04CF1688-8C5B-4CBF-A3E1-7C5C967109F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04CF1688-8C5B-4CBF-A3E1-7C5C967109F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04CF1688-8C5B-4CBF-A3E1-7C5C967109F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82F8FBB-6C72-49E6-9B3C-C07B85581FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82F8FBB-6C72-49E6-9B3C-C07B85581FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82F8FBB-6C72-49E6-9B3C-C07B85581FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82F8FBB-6C72-49E6-9B3C-C07B85581FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF54F0D3-35CD-46D9-9BEB-1898B73CDD49}
+	EndGlobalSection
+EndGlobal

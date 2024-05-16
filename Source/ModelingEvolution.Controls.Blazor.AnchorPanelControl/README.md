@@ -1,0 +1,2 @@
+# Anchor Panel Control
+The Anchor Panel Control is a Blazor component that allows you to create a panel that can be anchored to any side of the screen. The panel can be opened and closed by clicking on a button or by dragging it to the desired position.
