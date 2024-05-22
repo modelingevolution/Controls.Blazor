@@ -19,8 +19,9 @@
     [CascadingParameter]
     internal HistogramVm Parent { get; set; }
     readonly HistogramSeriesVm _histogramSeriesVm = new();
+    private Point<double>[] _points;
 
-   
+
     [Parameter]
     public byte[] Values { get; set; }
 
@@ -28,7 +29,22 @@
     public EventCallback<byte[]> ValuesChanged { get; set; }
 
     [Parameter]
-    public PointD[] Points { get; set; }
+    public PointD[] Points
+    {
+        get => _points;
+        set
+        {
+            if (_points != value)
+            {
+                if (value != null && value.Any())
+                {
+                    _histogramSeriesVm.Load(value);
+                }
+                _points = value;
+                InvokeAsync(StateHasChanged);
+            }
+        } 
+    }
 
     [Parameter]
     public EventCallback<PointD[]> PointsChanged { get; set; }

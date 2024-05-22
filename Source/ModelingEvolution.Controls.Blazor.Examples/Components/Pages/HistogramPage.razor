@@ -1,11 +1,14 @@
 ﻿@page "/histogram"
 @using System.Text
+@using ModelingEvolution.Drawing
 
 <PageTitle>Histogram</PageTitle>
 
 <Histogram>
     <HistogramSeries @bind-Values="@_values" @bind-Points="@_points" />
 </Histogram>
+
+<button @onclick="OnCreatePoints" > Add some points</button>
 
 @if (_points != null)
 {
@@ -61,4 +64,15 @@
     byte[]? _values;
     PointD[]? _points;
 
+    private async Task OnCreatePoints()
+    {
+        List<PointD> points = new List<Point<double>>();
+        points.Add(new Point<double>(5,5));
+        points.Add(new Point<double>(50,50));
+        points.Add(new Point<double>(100,100));
+
+
+        _points = points.ToArray();
+        StateHasChanged();
+    }
 }
