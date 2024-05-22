@@ -35,6 +35,7 @@
     
     protected override void OnInitialized()
     {
+         
         Parent.Register(this._histogramSeriesVm);
         _histogramSeriesVm.Parent = Parent;
         _histogramSeriesVm.Completed += OnCompleted;
